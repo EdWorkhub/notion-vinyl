@@ -3,16 +3,6 @@ import "dotenv/config";
 import { fetchAlbum, insertAlbum } from "./notion.js";
 import cors from "cors";
 
-process.on("uncaughtException", (err) =>
-  console.error("UNCAUGHT EXCEPTION:", err)
-);
-process.on("unhandledRejection", (err) =>
-  console.error("UNHANDLED REJECTION:", err)
-);
-
-console.log("Starting Node process...");
-
-console.log("Starting server...");
 
 ["NOTION_TOKEN", "NOTION_DATABASE_ID", "DISCOGS_TOKEN"].forEach((key) => {
   if (!process.env[key]) {
@@ -51,7 +41,7 @@ app.post("/add-album", async (req, res) => {
 
 // Start server
 try {
-  const PORT = process.env.PORT || 3000;
+  const PORT = process.env.PORT;
   app.listen(PORT, "0.0.0.0", () =>
     console.log(`Server listening on port ${PORT}`)
   );
