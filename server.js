@@ -1,10 +1,12 @@
 import express from "express";
 import "dotenv/config";
 import { fetchAlbum, insertAlbum } from "./notion.js";
+import cors from "cors";
 
 const app = express();
 app.use(express.json());
 app.use(express.static("public")); // serve frontend HTML
+app.use(cors({ origin: "*" }));
 
 // Endpoint to add album
 app.post("/add-album", async (req, res) => {

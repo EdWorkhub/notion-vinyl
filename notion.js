@@ -9,6 +9,7 @@ const discogsToken = process.env.DISCOGS_TOKEN;
 /**
  * Fetch album info from Discogs
  */
+
 export async function fetchAlbum(albumName) {
   if (!albumName) throw new Error("Album name required");
 
