@@ -5,8 +5,12 @@ import cors from "cors";
 
 app.get("/health", (req, res) => res.send("OK"));
 
-process.on("uncaughtException", err => console.error("UNCAUGHT EXCEPTION:", err));
-process.on("unhandledRejection", err => console.error("UNHANDLED REJECTION:", err));
+process.on("uncaughtException", (err) =>
+  console.error("UNCAUGHT EXCEPTION:", err)
+);
+process.on("unhandledRejection", (err) =>
+  console.error("UNHANDLED REJECTION:", err)
+);
 
 console.log("Starting Node process...");
 
@@ -20,7 +24,6 @@ console.log("Starting server...");
   }
 });
 
-
 const app = express();
 app.use(express.json());
 app.use(express.static("public")); // serve frontend HTML
@@ -30,7 +33,10 @@ app.use(cors({ origin: "*" }));
 app.post("/add-album", async (req, res) => {
   try {
     const { albumName } = req.body;
-    if (!albumName) return res.status(400).json({ success: false, error: "Album name is required" });
+    if (!albumName)
+      return res
+        .status(400)
+        .json({ success: false, error: "Album name is required" });
 
     const album = await fetchAlbum(albumName);
     await insertAlbum(album);
@@ -44,8 +50,10 @@ app.post("/add-album", async (req, res) => {
 
 // Start server
 try {
-    const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
-    } catch (err) {
-        console.error("Failed to start server:", err);
-    }
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, "0.0.0.0", () =>
+    console.log(`Server listening on port ${PORT}`)
+  );
+} catch (err) {
+  console.error("Failed to start server:", err);
+}
