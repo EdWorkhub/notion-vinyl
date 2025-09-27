@@ -3,8 +3,6 @@ import "dotenv/config";
 import { fetchAlbum, insertAlbum } from "./notion.js";
 import cors from "cors";
 
-app.get("/health", (req, res) => res.send("OK"));
-
 process.on("uncaughtException", (err) =>
   console.error("UNCAUGHT EXCEPTION:", err)
 );
@@ -28,6 +26,9 @@ const app = express();
 app.use(express.json());
 app.use(express.static("public")); // serve frontend HTML
 app.use(cors({ origin: "*" }));
+
+
+app.get("/health", (req, res) => res.send("OK"));
 
 // Endpoint to add album
 app.post("/add-album", async (req, res) => {
