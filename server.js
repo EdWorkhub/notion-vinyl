@@ -3,6 +3,18 @@ import "dotenv/config";
 import { fetchAlbum, insertAlbum } from "./notion.js";
 import cors from "cors";
 
+
+console.log("Starting server...");
+
+["NOTION_TOKEN", "NOTION_DATABASE_ID", "DISCOGS_TOKEN"].forEach((key) => {
+  if (!process.env[key]) {
+    console.error(`⚠️ Missing environment variable: ${key}`);
+  } else {
+    console.log(`✅ ${key} is set`);
+  }
+});
+
+
 const app = express();
 app.use(express.json());
 app.use(express.static("public")); // serve frontend HTML
@@ -25,5 +37,9 @@ app.post("/add-album", async (req, res) => {
 });
 
 // Start server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+try {
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+    } catch (err) {
+        console.error("Failed to start server:", err);
+    }
