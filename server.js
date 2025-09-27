@@ -3,6 +3,12 @@ import "dotenv/config";
 import { fetchAlbum, insertAlbum } from "./notion.js";
 import cors from "cors";
 
+app.get("/health", (req, res) => res.send("OK"));
+
+process.on("uncaughtException", err => console.error("UNCAUGHT EXCEPTION:", err));
+process.on("unhandledRejection", err => console.error("UNHANDLED REJECTION:", err));
+
+console.log("Starting Node process...");
 
 console.log("Starting server...");
 
@@ -39,7 +45,7 @@ app.post("/add-album", async (req, res) => {
 // Start server
 try {
     const PORT = process.env.PORT || 3000;
-    app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
     } catch (err) {
         console.error("Failed to start server:", err);
     }
