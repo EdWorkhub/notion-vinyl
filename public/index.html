@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Notion Album Adder</title>
+</head>
+<body>
+  <h1>Add Album to Notion</h1>
+  <input type="text" id="albumName" placeholder="Enter album name" />
+  <button id="submit">Add Album</button>
+  <div id="status"></div>
+
+  <script>
+    const statusDiv = document.getElementById("status");
+
+    document.getElementById("submit").onclick = async () => {
+      const albumName = document.getElementById("albumName").value.trim();
+      if (!albumName) return alert("Enter an album name");
+
+      statusDiv.innerText = "Adding album...";
+
+      try {
+        const res = await fetch("/add-album", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ albumName }),
+        });
+
+        if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
+        const data = await res.json();
+
+        if (data.success) {
+          statusDiv.innerHTML = `
+            ✅ Added: <strong>${data.album.title}</strong> by <strong>${data.album.artist}</strong>
+            <br/>
+            <img src="${data.album.cover}" alt="Cover" width="200"/>
+          `;
+        } else {
+          statusDiv.innerText = `❌ Error: ${data.error}`;
+        }
+      } catch (err) {
+        statusDiv.innerText = `❌ Network/error: ${err.message}`;
+        console.error(err);
+      }
+    };
+  </script>
+</body>
+</html>
