@@ -22,10 +22,8 @@ export async function fetchAlbum(albumName) {
 
   const album = data.results[0];
 
-  const title = album.title || "Unknown Title";
-  const artist =
-    album.artist ||
-    (album.artists && album.artists.length ? album.artists.map(a => a.name).join(", ") : "Unknown Artist");
+  const fullTitle = album.title;
+  const [artist, title] = fullTitle.split(" - ");
   const year = album.year ? Number(album.year) : null;
   const genre = Array.isArray(album.genre) ? album.genre : [];
   const cover = album.cover_image || null;
@@ -44,7 +42,7 @@ export async function insertAlbum(album) {
     properties: {
       Name: { title: [{ text: { content: album.title } }] },
       Artist: { rich_text: [{ text: { content: album.artist } }] },
-      Year: { number: album.year },
+      "Release Date": { number: album.year },
       Genre: { multi_select: album.genre.map(g => ({ name: g })) },
     },
     cover: album.cover
